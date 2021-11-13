@@ -1,6 +1,9 @@
 use gtk4 as gtk;
 use gtk::prelude::*;
-use gtk::{Application, ApplicationWindow, Button};
+use gtk::{Application, ApplicationWindow, Label, Grid, Orientation, Box as Box_};
+
+const BOARD_SIZE: usize = 9;
+type Board = [[u16; BOARD_SIZE]; BOARD_SIZE];
 
 fn main() {
     // Create a new application
@@ -19,26 +22,38 @@ fn build_ui(app: &Application) {
     // Create a window and set the title
     let window = ApplicationWindow::builder()
         .application(app)
-        .title("My GTK App")
+        .title("Sudo-q xd")
         .build();
 
-    // Create a button with label and margins
-    let button = Button::builder()
-        .label("Press me!")
-        .margin_top(12)
-        .margin_bottom(12)
-        .margin_start(12)
-        .margin_end(12)
+    let mut board: Board = [[9; BOARD_SIZE]; BOARD_SIZE];
+
+    let grid = Grid::builder()
+        .vexpand(true)
+        .margin_start(16)
+        .margin_end(16)
+        .margin_bottom(16)
+        .column_homogeneous(true)
+        .row_homogeneous(true)
         .build();
 
-    // Connect to "clicked" signal of `button`
-    button.connect_clicked(move |button| {
-        // Set the label to "Hello World!" after the button has been clicked on
-        button.set_label("Hello Rust!");
-    });
+    for (row_index, row) in board.iter_mut().enumerate() {
+        for (col_index, col) in row.iter_mut().enumerate() {
+            *col = ((row_index + 1) * (col_index + 1)) as u16;
+            grid.attach(&Label::new(Some(&col.to_string())), row_index as i32, col_index as i32, 1, 1);
+        }
+    }
 
+    let vbox = Box_::new(Orientation::Vertical, 16);
+    vbox.set_margin_top(16);
+
+    let title = Label::new(Some("Sudo-q xd"));
+
+    title.set_valign(gtk::Align::Start);
     // Add button
-    window.set_child(Some(&button));
+    window.set_default_size(400, 420);
+    vbox.append(&title);
+    vbox.append(&grid);
+    window.set_child(Some(&vbox));
 
     // Present window to the user
     window.present();
