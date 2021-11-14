@@ -41,8 +41,8 @@ fn build_ui(app: &Application) {
         for (col_index, col) in row.iter().enumerate() {
             grid.attach(
                 &Label::new(Some(&col.to_string())),
-                row_index as i32,
                 col_index as i32,
+                row_index as i32,
                 1,
                 1,
             );
