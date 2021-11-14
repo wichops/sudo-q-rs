@@ -1,9 +1,10 @@
-use gtk4 as gtk;
 use gtk::prelude::*;
-use gtk::{Application, ApplicationWindow, Label, Grid, Orientation, Box as Box_};
+use gtk::{Application, ApplicationWindow, Box as Box_, Grid, Label, Orientation};
+use gtk4 as gtk;
 
-const BOARD_SIZE: usize = 9;
-type Board = [[u16; BOARD_SIZE]; BOARD_SIZE];
+mod sudoku;
+
+use sudoku::Sudoku;
 
 fn main() {
     // Create a new application
@@ -25,8 +26,6 @@ fn build_ui(app: &Application) {
         .title("Sudo-q xd")
         .build();
 
-    let mut board: Board = [[9; BOARD_SIZE]; BOARD_SIZE];
-
     let grid = Grid::builder()
         .vexpand(true)
         .margin_start(16)
@@ -36,10 +35,17 @@ fn build_ui(app: &Application) {
         .row_homogeneous(true)
         .build();
 
-    for (row_index, row) in board.iter_mut().enumerate() {
-        for (col_index, col) in row.iter_mut().enumerate() {
-            *col = ((row_index + 1) * (col_index + 1)) as u16;
-            grid.attach(&Label::new(Some(&col.to_string())), row_index as i32, col_index as i32, 1, 1);
+    let sudoku = Sudoku::new();
+
+    for (row_index, row) in sudoku.board.iter().enumerate() {
+        for (col_index, col) in row.iter().enumerate() {
+            grid.attach(
+                &Label::new(Some(&col.to_string())),
+                row_index as i32,
+                col_index as i32,
+                1,
+                1,
+            );
         }
     }
 
