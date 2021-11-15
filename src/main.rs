@@ -36,11 +36,15 @@ fn build_ui(app: &Application) {
         .build();
 
     let sudoku = Sudoku::new();
-
     for (row_index, row) in sudoku.board.iter().enumerate() {
         for (col_index, col) in row.iter().enumerate() {
+            let text = match col {
+                1..=9 => col.to_string(),
+                _ => " ".to_string(),
+            };
+
             grid.attach(
-                &Label::new(Some(&col.to_string())),
+                &Label::new(Some(&text)),
                 col_index as i32,
                 row_index as i32,
                 1,
