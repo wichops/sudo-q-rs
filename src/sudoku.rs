@@ -2,9 +2,10 @@ use rand::seq::SliceRandom;
 use rand::thread_rng;
 
 const BOARD_SIZE: usize = 9;
+const QUADRANT_SIZE: usize = 3;
 type Board = [[i32; BOARD_SIZE]; BOARD_SIZE];
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 struct Vec2D {
     row: usize,
     column: usize,
@@ -32,41 +33,46 @@ impl Sudoku {
             board: [[0; BOARD_SIZE]; BOARD_SIZE],
         };
 
-        sudoku.init_board();
+        sudoku.generate_puzzle();
         sudoku
     }
 
-    fn init_board(&mut self) {
+    fn generate_puzzle(&mut self) {
         let mut numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9];
         let mut rng = thread_rng();
         numbers.shuffle(&mut rng);
 
         println!("seed: {:?}", numbers);
-        let result = self.generate_solution(numbers, 0, 0);
+        let result = self.solve(numbers, &Vec2D::new(0, 0));
+
         println!("Generated a puzzle: {}", result);
     }
 
-    fn generate_solution(&mut self, seed: [i32; 9], row: usize, column: usize) -> bool {
+    fn solve(&mut self, seed: [i32; 9], position: &Vec2D) -> bool {
+        let Vec2D { row, column } = *position;
         if row >= BOARD_SIZE || column >= BOARD_SIZE {
             return false;
+        }
+
+        let mut next_pos = position.clone();
+        if column == BOARD_SIZE - 1 {
+            next_pos.row += 1;
+            next_pos.column = 0;
+        } else {
+            next_pos.column += 1;
         }
 
         for n in seed {
             self.board[row][column] = n;
 
             if self.is_valid_position(&Vec2D::new(row, column)) {
+                println!("valid position, {}", n);
                 if row == BOARD_SIZE - 1 && column == BOARD_SIZE - 1 {
                     return true;
                 }
 
-                if column == BOARD_SIZE - 1 {
-                    if self.generate_solution(seed, row + 1, 0) {
-                        return true;
-                    }
-                } else {
-                    if self.generate_solution(seed, row, column + 1) {
-                        return true;
-                    }
+                if self.solve(seed, &next_pos) {
+                    return true;
                 }
             }
         }
@@ -107,12 +113,15 @@ impl Sudoku {
     }
 
     fn matches_quadrant(&self, position: &Vec2D) -> bool {
-        let quadrant = Vec2D::new(position.row / 3, position.column / 3);
+        let quadrant = Vec2D::new(
+            position.row / QUADRANT_SIZE,
+            position.column / QUADRANT_SIZE,
+        );
 
-        for i in 0..3 {
-            for j in 0..3 {
-                let row = 3 * quadrant.row + i;
-                let column = 3 * quadrant.column + j;
+        for i in 0..QUADRANT_SIZE {
+            for j in 0..QUADRANT_SIZE {
+                let row = QUADRANT_SIZE * quadrant.row + i;
+                let column = QUADRANT_SIZE * quadrant.column + j;
                 let current_pos = &Vec2D::new(row, column);
 
                 if position != current_pos {
