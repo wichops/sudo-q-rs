@@ -133,7 +133,7 @@ impl Sudoku {
             return solutions;
         }
 
-        let mut next_pos = position.clone();
+        let mut next_pos = *position;
         if column == BOARD_SIZE - 1 {
             next_pos.row += 1;
             next_pos.column = 0;
@@ -168,7 +168,7 @@ impl Sudoku {
             return false;
         }
 
-        let mut next_pos = position.clone();
+        let mut next_pos = *position;
         if column == BOARD_SIZE - 1 {
             next_pos.row += 1;
             next_pos.column = 0;
@@ -216,10 +216,10 @@ impl Sudoku {
     fn matches_row(&self, position: &Vec2D) -> bool {
         for i in 0..BOARD_SIZE {
             let current_pos = &Vec2D::new(position.row, i);
-            if position != current_pos {
-                if self.board[position.row][position.column] == self.board[position.row][i] {
-                    return true;
-                }
+            if position != current_pos
+                && self.board[position.row][position.column] == self.board[position.row][i]
+            {
+                return true;
             }
         }
         false
@@ -237,12 +237,11 @@ impl Sudoku {
                 let column = QUADRANT_SIZE * quadrant.column + j;
                 let current_pos = &Vec2D::new(row, column);
 
-                if position != current_pos {
-                    if self.board[position.row][position.column]
+                if position != current_pos
+                    && self.board[position.row][position.column]
                         == self.board[current_pos.row][current_pos.column]
-                    {
-                        return true;
-                    }
+                {
+                    return true;
                 }
             }
         }
