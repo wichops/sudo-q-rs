@@ -1,4 +1,5 @@
-use gtk::prelude::*;
+use gtk::gdk::Display;
+use gtk::{prelude::*, CssProvider, StyleContext, STYLE_PROVIDER_PRIORITY_APPLICATION};
 use gtk::{Application, ApplicationWindow, Box as Box_, Grid, Label, Orientation};
 use gtk4 as gtk;
 
@@ -9,12 +10,24 @@ use sudoku::Sudoku;
 fn main() {
     // Create a new application
     let app = Application::builder()
-        .application_id("org.gtk-rs.example")
+        .application_id("huichops.sudo-q.rs")
         .build();
 
-    // Connect to "activate" signal of `app`
-    app.connect_activate(build_ui);
+    app.connect_startup(|app| {
+        // The CSS "magic" happens here.
+        let provider = CssProvider::new();
+        provider.load_from_data(include_bytes!("style.css"));
+        // We give the CssProvider to the default screen so the CSS rules we added
+        // can be applied to our window.
+        StyleContext::add_provider_for_display(
+            &Display::default().expect("Error initializing gtk css provider."),
+            &provider,
+            STYLE_PROVIDER_PRIORITY_APPLICATION,
+        );
 
+        // We build the application UI.
+        build_ui(app);
+    });
     // Run the application
     app.run();
 }
@@ -23,7 +36,7 @@ fn build_ui(app: &Application) {
     // Create a window and set the title
     let window = ApplicationWindow::builder()
         .application(app)
-        .title("Sudo-q xd")
+        .title("SOY EL DIOS DEL CUCEI")
         .build();
 
     let grid = Grid::builder()
@@ -44,7 +57,10 @@ fn build_ui(app: &Application) {
             };
 
             grid.attach(
-                &Label::new(Some(&text)),
+                &Label::builder()
+                    .label(&text)
+                    .css_classes(vec![String::from("grid-item")])
+                    .build(),
                 col_index as i32,
                 row_index as i32,
                 1,
@@ -53,16 +69,19 @@ fn build_ui(app: &Application) {
         }
     }
 
-    let vbox = Box_::new(Orientation::Vertical, 16);
+    let vbox = Box_::new(Orientation::Vertical, 20);
     vbox.set_margin_top(16);
 
-    let title = Label::new(Some("Sudo-q xd"));
+    let title = Label::builder()
+        .label("Sudo-q xd")
+        .valign(gtk::Align::Start)
+        .css_classes(vec![String::from("title")])
+        .build();
 
-    title.set_valign(gtk::Align::Start);
-    // Add button
-    window.set_default_size(400, 420);
+    window.set_default_size(400, 480);
     vbox.append(&title);
     vbox.append(&grid);
+
     window.set_child(Some(&vbox));
 
     // Present window to the user

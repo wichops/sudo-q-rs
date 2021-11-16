@@ -1,0 +1,36 @@
+window {
+    background-color: white;
+}
+
+label.title {
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.grid-item {
+    border-right: 1px solid grey;
+    border-bottom: 1px solid grey;
+    color: black;
+    font-size: 16px;
+}
+
+.grid-item:nth-child(9n + 3) {
+    border-right: 2px solid black;
+}
+
+.grid-item:nth-child(9n + 6) {
+    border-right: 2px solid black;
+}
+
+.grid-item:nth-child(n+19):nth-child(-n+27),
+.grid-item:nth-child(n+46):nth-child(-n+54) {
+    border-bottom: 2px solid black;
+}
+
+.grid-item:nth-child(9n) {
+    border-right: 0;
+}
+
+.grid-item:nth-child(n+73):nth-child(-n+81) {
+    border-bottom: 0;
+}
