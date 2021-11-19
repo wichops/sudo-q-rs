@@ -1,7 +1,8 @@
 # sudo-q
 ## TODO
-- Add blank spaces to the generated puzzle
+- Add interaction to empty cells
 - Add a list of numbers to the bottom
-- Add borders
+- Add winning condition
+- Game Screen
 
-![2021-11-14_17-39](https://user-images.githubusercontent.com/47255415/141703341-482f42fd-fadb-41e8-8a74-7a6b7a5f6518.png)
+![image](https://user-images.githubusercontent.com/47255415/142633504-bec9f27d-00bc-4a49-8da8-36d071634e8d.png)
