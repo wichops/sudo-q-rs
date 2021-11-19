@@ -3,28 +3,57 @@ window {
 }
 
 label.title {
-    font-size: 20px;
+    font-size: 24px;
     font-weight: bold;
 }
 
 .grid-item {
-    border-right: 1px solid grey;
-    border-bottom: 1px solid grey;
+    border-right: 1px solid lightgrey;
+    border-bottom: 1px solid lightgrey;
     color: black;
     font-size: 16px;
 }
 
+.selected {
+    border-radius: 100%;
+    background-color: #6ac9fc;
+}
+
+.not-selected {
+    border-radius: 100%;
+    background-color: #ddd;
+}
+
+label {
+    font-size: 20px;
+    transition: color 0.2s ease-in-out;
+}
+
+.control {
+    border-radius: 100%;
+    border: 1px solid grey;
+    min-width: 48px;
+    min-height: 48px;
+}
+
+button {
+    border: none;
+    padding: 2px;
+    background-color: rgba(0,0,0,0);
+    border-radius: 0;
+}
+
 .grid-item:nth-child(9n + 3) {
-    border-right: 2px solid black;
+    border-right: 2px solid grey;
 }
 
 .grid-item:nth-child(9n + 6) {
-    border-right: 2px solid black;
+    border-right: 2px solid grey;
 }
 
 .grid-item:nth-child(n+19):nth-child(-n+27),
 .grid-item:nth-child(n+46):nth-child(-n+54) {
-    border-bottom: 2px solid black;
+    border-bottom: 2px solid grey;
 }
 
 .grid-item:nth-child(9n) {

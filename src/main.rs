@@ -1,5 +1,7 @@
 use gtk::gdk::Display;
-use gtk::{prelude::*, CssProvider, StyleContext, STYLE_PROVIDER_PRIORITY_APPLICATION};
+use gtk::{
+    prelude::*, Button, CssProvider, FlowBox, StyleContext, STYLE_PROVIDER_PRIORITY_APPLICATION,
+};
 use gtk::{Application, ApplicationWindow, Box as Box_, Grid, Label, Orientation};
 use gtk4 as gtk;
 
@@ -51,25 +53,29 @@ fn build_ui(app: &Application) {
     let sudoku = Sudoku::new();
     for (row_index, row) in sudoku.board.iter().enumerate() {
         for (col_index, col) in row.iter().enumerate() {
-            let text = match col {
-                1..=9 => col.to_string(),
-                _ => " ".to_string(),
+            let (text, class) = match col {
+                1..=9 => (col.to_string(), "not-selected"),
+                _ => (" ".to_string(), "empty"),
             };
 
-            grid.attach(
-                &Label::builder()
-                    .label(&text)
-                    .css_classes(vec![String::from("grid-item")])
-                    .build(),
-                col_index as i32,
-                row_index as i32,
-                1,
-                1,
-            );
+            let label = Label::new(Some(&text));
+            label.add_css_class(class);
+
+            let button = Button::new();
+            button.add_css_class("grid-item");
+
+            button.set_child(Some(&label));
+
+            button.connect_clicked(move |b: &Button| {
+                let label = b.child().unwrap();
+                label.add_css_class("selected");
+            });
+
+            grid.attach(&button, col_index as i32, row_index as i32, 1, 1);
         }
     }
 
-    let vbox = Box_::new(Orientation::Vertical, 20);
+    let vbox = Box_::new(Orientation::Vertical, 16);
     vbox.set_margin_top(16);
 
     let title = Label::builder()
@@ -78,9 +84,23 @@ fn build_ui(app: &Application) {
         .css_classes(vec![String::from("title")])
         .build();
 
-    window.set_default_size(400, 480);
+    let controls = FlowBox::new();
+
+    controls.set_column_spacing(8);
+    controls.set_margin_start(32);
+    controls.set_margin_end(32);
+    controls.set_margin_bottom(16);
+
+    for n in 0..=9 {
+        let label = Label::new(Some(&n.to_string()));
+        label.add_css_class("control");
+        controls.insert(&label, n);
+    }
+
+    window.set_default_size(400, 620);
     vbox.append(&title);
     vbox.append(&grid);
+    vbox.append(&controls);
 
     window.set_child(Some(&vbox));
 
