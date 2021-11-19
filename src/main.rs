@@ -1,8 +1,9 @@
-use gtk::gdk::Display;
+use gdk::Display;
+use glib::clone;
+use gtk::{gdk, glib, Application, ApplicationWindow, Box as Box_, Grid, Label, Orientation};
 use gtk::{
     prelude::*, Button, CssProvider, FlowBox, StyleContext, STYLE_PROVIDER_PRIORITY_APPLICATION,
 };
-use gtk::{Application, ApplicationWindow, Box as Box_, Grid, Label, Orientation};
 use gtk4 as gtk;
 
 mod sudoku;
@@ -15,7 +16,7 @@ fn main() {
         .application_id("huichops.sudo-q.rs")
         .build();
 
-    app.connect_startup(|app| {
+    app.connect_startup(|_| {
         // The CSS "magic" happens here.
         let provider = CssProvider::new();
         provider.load_from_data(include_bytes!("style.css"));
@@ -26,16 +27,13 @@ fn main() {
             &provider,
             STYLE_PROVIDER_PRIORITY_APPLICATION,
         );
-
-        // We build the application UI.
-        build_ui(app);
     });
-    // Run the application
+
+    app.connect_activate(build_ui);
     app.run();
 }
 
 fn build_ui(app: &Application) {
-    // Create a window and set the title
     let window = ApplicationWindow::builder()
         .application(app)
         .title("SOY EL DIOS DEL CUCEI")
@@ -66,10 +64,14 @@ fn build_ui(app: &Application) {
 
             button.set_child(Some(&label));
 
-            button.connect_clicked(move |b: &Button| {
+            button.connect_clicked(clone!(@weak grid => move |b: &Button| {
+
+                let (column, row, _, _) = grid.query_child(b);
+                println!("{}, {}", row, column);
+
                 let label = b.child().unwrap();
                 label.add_css_class("selected");
-            });
+            }));
 
             grid.attach(&button, col_index as i32, row_index as i32, 1, 1);
         }
