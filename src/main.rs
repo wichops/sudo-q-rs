@@ -1,14 +1,16 @@
 use gdk::Display;
 use glib::clone;
-use gtk::{gdk, glib, Application, ApplicationWindow, Box as Box_, Grid, Label, Orientation};
 use gtk::{
-    prelude::*, Button, CssProvider, FlowBox, StyleContext, STYLE_PROVIDER_PRIORITY_APPLICATION,
+    gdk, glib, prelude::*, Application, ApplicationWindow, Button, CssProvider, Label,
+    StyleContext, STYLE_PROVIDER_PRIORITY_APPLICATION,
 };
 use gtk4 as gtk;
 use std::{cell::Cell, rc::Rc};
 
+mod board;
 mod sudoku;
 
+use board::Board;
 use sudoku::Sudoku;
 
 fn main() {
@@ -29,28 +31,23 @@ fn main() {
             STYLE_PROVIDER_PRIORITY_APPLICATION,
         );
     });
-
     app.connect_activate(build_ui);
+    Board::static_type();
+
     app.run();
 }
 
 fn build_ui(app: &Application) {
-    let window = ApplicationWindow::builder()
-        .application(app)
-        .title("SOY EL DIOS DEL CUCEI")
-        .build();
+    let builder = gtk::Builder::from_string(include_str!("window.ui"));
 
-    let grid = Grid::builder()
-        .vexpand(true)
-        .margin_start(16)
-        .margin_end(16)
-        .margin_bottom(16)
-        .column_homogeneous(true)
-        .row_homogeneous(true)
-        .build();
+    let window: ApplicationWindow = builder
+        .object("window")
+        .expect("Could not get object `window` from builder.");
+    let grid: Board = builder
+        .object("board")
+        .expect("Could not get object `board` from builder.");
 
     let sudoku = Sudoku::new();
-
     let selected = Rc::new(Cell::new((-1, -1)));
 
     for (row_index, row) in sudoku.board.iter().enumerate() {
@@ -87,21 +84,9 @@ fn build_ui(app: &Application) {
         }
     }
 
-    let vbox = Box_::new(Orientation::Vertical, 16);
-    vbox.set_margin_top(16);
-
-    let title = Label::builder()
-        .label("Sudo-q xd")
-        .valign(gtk::Align::Start)
-        .css_classes(vec![String::from("title")])
-        .build();
-
-    let controls = FlowBox::new();
-
-    controls.set_column_spacing(8);
-    controls.set_margin_start(32);
-    controls.set_margin_end(32);
-    controls.set_margin_bottom(16);
+    let controls: gtk::FlowBox = builder
+        .object("controls")
+        .expect("Could not get object `controls` from builder.");
 
     for n in 0..=9 {
         let label = Label::new(Some(&n.to_string()));
@@ -109,13 +94,15 @@ fn build_ui(app: &Application) {
         controls.insert(&label, n);
     }
 
+    window.set_application(Some(app));
     window.set_default_size(400, 620);
-    vbox.append(&title);
-    vbox.append(&grid);
-    vbox.append(&controls);
 
-    window.set_child(Some(&vbox));
+    let container: gtk::Box = builder
+        .object("container")
+        .expect("Could not get object `container` from builder.");
 
-    // Present window to the user
+    window.set_child(Some(&container));
+
+    // // Present window to the user
     window.present();
 }

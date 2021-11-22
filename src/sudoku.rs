@@ -162,7 +162,7 @@ impl Sudoku {
         current_solutions
     }
 
-    fn solve(&mut self, seed: [i32; 9], position: &Vec2D) -> bool {
+    fn solve(&mut self, numbers: [i32; 9], position: &Vec2D) -> bool {
         let Vec2D { row, column } = *position;
         if row >= BOARD_SIZE || column >= BOARD_SIZE {
             return false;
@@ -176,7 +176,7 @@ impl Sudoku {
             next_pos.column += 1;
         }
 
-        for n in seed {
+        for n in numbers {
             self.board[row][column] = n;
 
             if self.is_valid_position(&Vec2D::new(row, column)) {
@@ -184,7 +184,7 @@ impl Sudoku {
                     return true;
                 }
 
-                if self.solve(seed, &next_pos) {
+                if self.solve(numbers, &next_pos) {
                     return true;
                 }
             }
