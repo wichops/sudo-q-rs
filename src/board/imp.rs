@@ -1,5 +1,5 @@
 use gtk::glib;
-use gtk::subclass::prelude::*;
+use {gtk::prelude::*, gtk::subclass::prelude::*};
 
 use gtk4 as gtk;
 // Object holding the state

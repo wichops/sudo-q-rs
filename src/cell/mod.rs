@@ -21,8 +21,12 @@ impl BoardCell {
         let imp = imp::BoardCell::from_instance(&object);
         imp.set_number(number);
 
-        println!("imp.number {:?}", imp.number.get());
         object
+    }
+
+    pub fn set_position(&self, position: (i32, i32)) {
+        let imp = imp::BoardCell::from_instance(self);
+        imp.position.set(position);
     }
 }
 

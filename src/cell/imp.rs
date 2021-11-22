@@ -56,4 +56,8 @@ impl ObjectImpl for BoardCell {
 impl WidgetImpl for BoardCell {}
 
 // Trait shared by all buttons
-impl ButtonImpl for BoardCell {}
+impl ButtonImpl for BoardCell {
+    fn clicked(&self, _button: &Self::Type) {
+        println!("{:?}", self.position.get());
+    }
+}

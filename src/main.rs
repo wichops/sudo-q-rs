@@ -1,11 +1,11 @@
 use gdk::Display;
 use glib::clone;
 use gtk::{
-    gdk, glib, prelude::*, Application, ApplicationWindow, Button, CssProvider, Label,
-    StyleContext, STYLE_PROVIDER_PRIORITY_APPLICATION,
+    gdk, glib, prelude::*, Application, ApplicationWindow, CssProvider, Label, StyleContext,
+    STYLE_PROVIDER_PRIORITY_APPLICATION,
 };
 use gtk4 as gtk;
-use std::{cell::Cell, rc::Rc};
+use std::{borrow::Borrow, cell::Cell, rc::Rc};
 
 mod board;
 mod cell;
@@ -46,7 +46,7 @@ fn build_ui(app: &Application) {
         .object("window")
         .expect("Could not get object `window` from builder.");
     let grid: Board = builder
-        .object("board")
+        .object::<Board>("board")
         .expect("Could not get object `board` from builder.");
 
     let sudoku = Sudoku::new();
@@ -61,9 +61,6 @@ fn build_ui(app: &Application) {
                     let (column, row, _, _) = grid.query_child(b);
                     b.add_css_class("grid-item--selected");
 
-                    println!("{}, {}", row, column);
-
-
                     let (r, c) = selected.get();
                     if let Some(child) = grid.child_at(c, r) {
                         child.remove_css_class("grid-item--selected");
@@ -72,7 +69,8 @@ fn build_ui(app: &Application) {
                 }),
             );
 
-            grid.attach(&board_cell, col_index as i32, row_index as i32, 1, 1);
+            grid.borrow()
+                .attach_cell(&board_cell, row_index as i32, col_index as i32);
         }
     }
 

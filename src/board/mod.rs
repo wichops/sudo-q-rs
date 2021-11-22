@@ -1,9 +1,11 @@
 mod imp;
 
 use glib::Object;
-use gtk::glib;
+use gtk::{glib, prelude::*, subclass::prelude::*};
 
 use gtk4 as gtk;
+
+use crate::cell;
 
 glib::wrapper! {
     pub struct Board(ObjectSubclass<imp::Board>)
@@ -14,6 +16,11 @@ glib::wrapper! {
 impl Board {
     pub fn new() -> Self {
         Object::new(&[]).expect("Failed to create `Board`.")
+    }
+
+    pub fn attach_cell(&self, cell: &cell::BoardCell, row: i32, column: i32) {
+        cell.set_position((row, column));
+        self.attach(cell, column, row, 1, 1)
     }
 }
 
