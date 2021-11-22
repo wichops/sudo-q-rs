@@ -8,9 +8,11 @@ use gtk4 as gtk;
 use std::{cell::Cell, rc::Rc};
 
 mod board;
+mod cell;
 mod sudoku;
 
 use board::Board;
+use cell::BoardCell;
 use sudoku::Sudoku;
 
 fn main() {
@@ -52,35 +54,25 @@ fn build_ui(app: &Application) {
 
     for (row_index, row) in sudoku.board.iter().enumerate() {
         for (col_index, col) in row.iter().enumerate() {
-            let text = if let 1..=9 = col {
-                col.to_string()
-            } else {
-                " ".to_string()
-            };
+            let board_cell = BoardCell::with_number(*col);
 
-            let label = Label::new(Some(&text));
-            label.add_css_class("grid-item__content");
+            board_cell.connect_clicked(
+                clone!(@strong selected, @weak grid => move |b: &BoardCell| {
+                    let (column, row, _, _) = grid.query_child(b);
+                    b.add_css_class("grid-item--selected");
 
-            let button = Button::new();
-            button.add_css_class("grid-item");
-
-            button.set_child(Some(&label));
-
-            button.connect_clicked(clone!(@strong selected, @weak grid => move |b: &Button| {
-                let (column, row, _, _) = grid.query_child(b);
-                b.add_css_class("grid-item--selected");
-
-                println!("{}, {}", row, column);
+                    println!("{}, {}", row, column);
 
 
-                let (r, c) = selected.get();
-                if let Some(child) = grid.child_at(c, r) {
-                    child.remove_css_class("grid-item--selected");
-                }
-                selected.set((row, column));
-            }));
+                    let (r, c) = selected.get();
+                    if let Some(child) = grid.child_at(c, r) {
+                        child.remove_css_class("grid-item--selected");
+                    }
+                    selected.set((row, column));
+                }),
+            );
 
-            grid.attach(&button, col_index as i32, row_index as i32, 1, 1);
+            grid.attach(&board_cell, col_index as i32, row_index as i32, 1, 1);
         }
     }
 
@@ -103,6 +95,5 @@ fn build_ui(app: &Application) {
 
     window.set_child(Some(&container));
 
-    // // Present window to the user
     window.present();
 }

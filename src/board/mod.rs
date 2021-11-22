@@ -15,10 +15,6 @@ impl Board {
     pub fn new() -> Self {
         Object::new(&[]).expect("Failed to create `Board`.")
     }
-
-    pub fn with_label(label: &str) -> Self {
-        Object::new(&[("label", &label)]).expect("Failed to create `Board`.")
-    }
 }
 
 impl Default for Board {

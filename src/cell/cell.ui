@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+  <template class="SudokuBoardCell" parent="GtkButton">
+    <style>
+      <class name="grid-item" />
+    </style>
+
+  <child>
+    <object class="GtkLabel" id="label">
+      <style>
+        <class name="grid-item__content" />
+      </style>
+    </object>
+  </child>
+
+</template>
+</interface>
