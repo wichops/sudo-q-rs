@@ -1,11 +1,9 @@
 use gdk::Display;
-use glib::clone;
 use gtk::{
-    gdk, glib, prelude::*, Application, ApplicationWindow, CssProvider, Label, StyleContext,
+    gdk, prelude::*, Application, ApplicationWindow, CssProvider, Label, StyleContext,
     STYLE_PROVIDER_PRIORITY_APPLICATION,
 };
 use gtk4 as gtk;
-use std::{borrow::Borrow, cell::Cell, rc::Rc};
 
 mod board;
 mod cell;
@@ -50,27 +48,12 @@ fn build_ui(app: &Application) {
         .expect("Could not get object `board` from builder.");
 
     let sudoku = Sudoku::new();
-    let selected = Rc::new(Cell::new((-1, -1)));
 
     for (row_index, row) in sudoku.board.iter().enumerate() {
         for (col_index, col) in row.iter().enumerate() {
             let board_cell = BoardCell::with_number(*col);
 
-            board_cell.connect_clicked(
-                clone!(@strong selected, @weak grid => move |b: &BoardCell| {
-                    let (column, row, _, _) = grid.query_child(b);
-                    b.add_css_class("grid-item--selected");
-
-                    let (r, c) = selected.get();
-                    if let Some(child) = grid.child_at(c, r) {
-                        child.remove_css_class("grid-item--selected");
-                    }
-                    selected.set((row, column));
-                }),
-            );
-
-            grid.borrow()
-                .attach_cell(&board_cell, row_index as i32, col_index as i32);
+            grid.attach_cell(&board_cell, row_index as i32, col_index as i32);
         }
     }
 
@@ -85,7 +68,7 @@ fn build_ui(app: &Application) {
     }
 
     window.set_application(Some(app));
-    window.set_default_size(400, 620);
+    window.set_default_size(420, 640);
 
     let container: gtk::Box = builder
         .object("container")

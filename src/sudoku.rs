@@ -1,7 +1,7 @@
 use rand::seq::SliceRandom;
 use rand::thread_rng;
 
-const EMPTY_LIMIT: i32 = 16;
+const EMPTY_LIMIT: i32 = 17;
 const BOARD_SIZE: usize = 9;
 const QUADRANT_SIZE: usize = 3;
 
@@ -74,7 +74,7 @@ impl Sudoku {
     fn empty_spaces(&mut self) {
         let mut positions = self.get_shuffled_positions();
 
-        while self.count_empty_spaces() < EMPTY_LIMIT {
+        while self.count_empty_spaces() <= EMPTY_LIMIT {
             let Vec2D { row, column } = positions.pop().unwrap();
             let board_value = self.board[row][column];
 

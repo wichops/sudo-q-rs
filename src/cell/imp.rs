@@ -1,10 +1,12 @@
 use std::cell::Cell;
 
+use gtk::glib::subclass::Signal;
 use gtk::prelude::*;
 use gtk::subclass::prelude::*;
 use gtk::{glib, CompositeTemplate};
 
 use gtk4 as gtk;
+use once_cell::sync::Lazy;
 
 #[derive(Default, CompositeTemplate)]
 #[template(file = "cell.ui")]
@@ -14,6 +16,7 @@ pub struct BoardCell {
 
     pub number: Cell<i32>,
     pub position: Cell<(i32, i32)>,
+    pub selected: Cell<bool>,
 }
 
 // The central trait for subclassing a GObject
@@ -50,6 +53,20 @@ impl ObjectImpl for BoardCell {
         self.parent_constructed(obj);
         self.label.set_label(&self.number.get().to_string());
     }
+    fn signals() -> &'static [Signal] {
+        static SIGNALS: Lazy<Vec<Signal>> = Lazy::new(|| {
+            vec![Signal::builder(
+                // Signal name
+                "cell-clicked",
+                // Types of the values which will be sent to the signal handler
+                &[i32::static_type().into(), i32::static_type().into()],
+                // Type of the value the signal handler sends back
+                <()>::static_type().into(),
+            )
+            .build()]
+        });
+        SIGNALS.as_ref()
+    }
 }
 
 // Trait shared by all widgets
@@ -57,7 +74,10 @@ impl WidgetImpl for BoardCell {}
 
 // Trait shared by all buttons
 impl ButtonImpl for BoardCell {
-    fn clicked(&self, _button: &Self::Type) {
-        println!("{:?}", self.position.get());
+    fn clicked(&self, button: &Self::Type) {
+        let (row, column) = self.position.get();
+        button
+            .emit_by_name("cell-clicked", &[&row, &column])
+            .expect("Error emiting 'cell-clicked'");
     }
 }

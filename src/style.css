@@ -44,7 +44,12 @@ label {
 
 button {
     border: none;
-    padding: 2px;
+    padding: 4px;
+    border-radius: 0;
+}
+
+button.flat {
+    border: none;
     background-color: rgba(0,0,0,0);
     border-radius: 0;
 }

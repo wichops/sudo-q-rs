@@ -1,7 +1,7 @@
 mod imp;
 
 use glib::Object;
-use gtk::{glib, subclass::prelude::*};
+use gtk::{glib, prelude::*, subclass::prelude::*};
 
 use gtk4 as gtk;
 
@@ -27,6 +27,18 @@ impl BoardCell {
     pub fn set_position(&self, position: (i32, i32)) {
         let imp = imp::BoardCell::from_instance(self);
         imp.position.set(position);
+    }
+    pub fn toggle_selected(&self) {
+        let imp = imp::BoardCell::from_instance(self);
+        let selected = imp.selected.get();
+
+        if selected {
+            self.remove_css_class("grid-item--selected");
+        } else {
+            self.add_css_class("grid-item--selected");
+        }
+
+        imp.selected.set(!selected);
     }
 }
 
