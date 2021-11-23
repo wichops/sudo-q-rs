@@ -25,7 +25,7 @@ impl PartialEq for Vec2D {
     }
 }
 
-#[derive(Clone)]
+#[derive(Clone, Default)]
 pub struct Sudoku {
     pub board: Board,
 }
@@ -88,7 +88,7 @@ impl Sudoku {
     }
 
     pub fn solve_multiple(&mut self) -> i32 {
-        self.do_solve_multiple(&Vec2D::new(0, 0), 0)
+        self.do_solve_multiple(Vec2D::new(0, 0), 0)
     }
 
     fn is_solved(&self) -> bool {
@@ -125,15 +125,15 @@ impl Sudoku {
         false
     }
 
-    fn do_solve_multiple(&mut self, position: &Vec2D, solutions: i32) -> i32 {
-        let Vec2D { row, column } = *position;
+    fn do_solve_multiple(&mut self, position: Vec2D, solutions: i32) -> i32 {
+        let Vec2D { row, column } = position;
         let mut current_solutions = solutions;
 
         if row >= BOARD_SIZE || column >= BOARD_SIZE {
             return solutions;
         }
 
-        let mut next_pos = *position;
+        let mut next_pos = position;
         if column == BOARD_SIZE - 1 {
             next_pos.row += 1;
             next_pos.column = 0;
@@ -142,7 +142,7 @@ impl Sudoku {
         }
 
         if self.board[row][column] != 0 {
-            return solutions + self.do_solve_multiple(&next_pos, solutions);
+            return solutions + self.do_solve_multiple(next_pos, solutions);
         }
 
         for n in 1..=9 {
@@ -153,7 +153,7 @@ impl Sudoku {
             }
 
             if self.is_valid_position(&Vec2D::new(row, column)) {
-                current_solutions += self.do_solve_multiple(&next_pos, solutions);
+                current_solutions += self.do_solve_multiple(next_pos, solutions);
             }
         }
 

@@ -6,7 +6,6 @@ use gtk::{
     prelude::*,
     subclass::prelude::*,
 };
-use std::borrow::BorrowMut;
 
 use cell::BoardCell;
 
@@ -32,6 +31,7 @@ impl Board {
             clone!(@weak self as board => @default-return None, move |args| {
                 let imp = imp::Board::from_instance(&board);
                 let clicked_cell = args[0].get::<BoardCell>().expect("Could not get BoardCell");
+
                 match &*imp.selected.borrow() {
                     Some(s) => s.toggle_selected(),
                     None => {}
@@ -47,7 +47,9 @@ impl Board {
                 println!("clicked: ({}, {})", row, column);
                 None
             }),
-        );
+        )
+        .unwrap();
+
         self.attach(cell, column, row, 1, 1)
     }
 }

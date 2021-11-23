@@ -18,16 +18,20 @@ impl BoardCell {
     pub fn with_number(number: i32) -> Self {
         let object = Object::new(&[]).expect("Failed to create `BoardCell`.");
 
-        let imp = imp::BoardCell::from_instance(&object);
-        imp.set_number(number);
-
+        BoardCell::set_number(&object, number);
         object
+    }
+
+    pub fn set_number(&self, number: i32) {
+        let imp = imp::BoardCell::from_instance(self);
+        imp.set_number(number);
     }
 
     pub fn set_position(&self, position: (i32, i32)) {
         let imp = imp::BoardCell::from_instance(self);
         imp.position.set(position);
     }
+
     pub fn toggle_selected(&self) {
         let imp = imp::BoardCell::from_instance(self);
         let selected = imp.selected.get();

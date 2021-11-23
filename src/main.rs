@@ -68,7 +68,7 @@ fn build_ui(app: &Application) {
     }
 
     window.set_application(Some(app));
-    window.set_default_size(420, 640);
+    window.set_default_size(480, 640);
 
     let container: gtk::Box = builder
         .object("container")
