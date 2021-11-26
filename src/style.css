@@ -17,6 +17,11 @@ flowboxchild {
     background-color: white;
 }
 
+button.btn {
+    background-color: transparent;
+    border-radius: 50%;
+}
+
 .grid-item {
     border-right: 1px solid lightgrey;
     border-bottom: 1px solid lightgrey;

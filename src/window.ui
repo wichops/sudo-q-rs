@@ -4,7 +4,44 @@
     <property name="title">Sudoq</property>
     <child>
       <object class="GtkStack" id="stack">
-        <property name="visible-child-name">game-screen</property>
+        <child>
+          <object class="GtkStackPage">
+            <property name="name">intro-screen</property>
+            <property name="child">
+              <object class="GtkBox">
+                <property name="orientation">vertical</property>
+                <property name="margin-top">16</property>
+                <child>
+                  <object class="GtkLabel">
+                    <property name="label">Sudoku</property>
+                    <property name="valign">start</property>
+                    <style>
+                      <class name="title" />
+                    </style>
+                  </object>
+                </child>
+                <child>
+                  <object class="GtkButton" id="start-game">
+                    <property name="hexpand">false</property>
+                    <property name="vexpand">true</property>
+                    <property name="valign">center</property>
+                    <property name="margin-top">16</property>
+                    <property name="margin-start">200</property>
+                    <property name="margin-end">200</property>
+                    <!-- <style> -->
+                    <!--   <class name="btn" /> -->
+                    <!-- </style> -->
+                    <child>
+                      <object class="GtkLabel">
+                        <property name="label">New Game</property>
+                      </object>
+                    </child>
+                  </object>
+                </child>
+              </object>
+            </property>
+          </object>
+        </child>
         <child>
           <object class="GtkStackPage">
             <property name="name">game-screen</property>
@@ -42,10 +79,11 @@
             <property name="child">
               <object class="GtkBox">
                 <property name="orientation">vertical</property>
+                <property name="vexpand">true</property>
                 <property name="margin-top">16</property>
                 <child>
                   <object class="GtkLabel" id="win-title">
-                    <property name="label">GANASTE ALV</property>
+                    <property name="label">GANASTE!</property>
                     <property name="valign">center</property>
                     <style>
                       <class name="title--win" />

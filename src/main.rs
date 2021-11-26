@@ -1,6 +1,7 @@
 use gdk::Display;
+use glib::clone;
 use gtk::{
-    gdk, prelude::*, Application, ApplicationWindow, CssProvider, Label, Stack,
+    gdk, glib, prelude::*, Application, ApplicationWindow, Button, CssProvider, Stack,
     StackTransitionType, StyleContext, STYLE_PROVIDER_PRIORITY_APPLICATION,
 };
 use gtk4 as gtk;
@@ -62,21 +63,19 @@ fn build_ui(app: &Application) {
     stack.set_transition_duration(300);
     stack.set_transition_type(StackTransitionType::SlideDown);
 
+    let btn: Button = builder
+        .object::<Button>("start-game")
+        .expect("Could not get `start-game` from builder.");
+
+    btn.connect_clicked(clone!(@weak stack => move |_| {
+        stack.set_visible_child_name("game-screen");
+    }));
+
     grid.connect_local("board-solved", false, move |_| {
         stack.set_visible_child_name("win-screen");
-
         None
-    });
-
-    // let controls: gtk::FlowBox = builder
-    //     .object("controls")
-    //     .expect("Could not get object `controls` from builder.");
-
-    // for n in 0..=9 {
-    //     let label = Label::new(Some(&n.to_string()));
-    //     label.add_css_class("control");
-    //     controls.insert(&label, n);
-    // }
+    })
+    .unwrap();
 
     let window: ApplicationWindow = builder
         .object("window")
