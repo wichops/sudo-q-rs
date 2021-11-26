@@ -40,6 +40,10 @@ impl Sudoku {
         sudoku
     }
 
+    pub fn set_cell(&mut self, number: i32, row: i32, column: i32) {
+        self.board[row as usize][column as usize] = number;
+    }
+
     fn generate_puzzle(&mut self) {
         let mut numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9];
         let mut rng = thread_rng();
@@ -74,7 +78,7 @@ impl Sudoku {
     fn empty_spaces(&mut self) {
         let mut positions = self.get_shuffled_positions();
 
-        while self.count_empty_spaces() <= EMPTY_LIMIT {
+        while self.count_empty_spaces() < EMPTY_LIMIT {
             let Vec2D { row, column } = positions.pop().unwrap();
             let board_value = self.board[row][column];
 
@@ -91,7 +95,7 @@ impl Sudoku {
         self.do_solve_multiple(Vec2D::new(0, 0), 0)
     }
 
-    fn is_solved(&self) -> bool {
+    pub fn is_solved(&self) -> bool {
         for i in 0..BOARD_SIZE {
             for j in 0..BOARD_SIZE {
                 if !self.is_valid_position(&Vec2D::new(i, j)) {

@@ -32,6 +32,11 @@ impl BoardCell {
         imp.position.set(position);
     }
 
+    pub fn get_position(&self) -> (i32, i32) {
+        let imp = imp::BoardCell::from_instance(self);
+        imp.position.get()
+    }
+
     pub fn toggle_selected(&self) {
         let imp = imp::BoardCell::from_instance(self);
         let selected = imp.selected.get();

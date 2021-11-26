@@ -7,6 +7,10 @@ label.title {
     font-weight: bold;
 }
 
+label.huge {
+    font-size: 72px;
+    color: green;
+}
 flowboxchild {
     border: 0;
     background-color: white;

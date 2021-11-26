@@ -43,11 +43,13 @@ fn build_ui(app: &Application) {
     let window: ApplicationWindow = builder
         .object("window")
         .expect("Could not get object `window` from builder.");
+
     let grid: Board = builder
         .object::<Board>("board")
         .expect("Could not get object `board` from builder.");
 
     let sudoku = Sudoku::new();
+    grid.set_grid(sudoku.clone());
 
     for (row_index, row) in sudoku.board.iter().enumerate() {
         for (col_index, col) in row.iter().enumerate() {
@@ -57,22 +59,33 @@ fn build_ui(app: &Application) {
         }
     }
 
-    let controls: gtk::FlowBox = builder
-        .object("controls")
-        .expect("Could not get object `controls` from builder.");
+    // let controls: gtk::FlowBox = builder
+    //     .object("controls")
+    //     .expect("Could not get object `controls` from builder.");
 
-    for n in 0..=9 {
-        let label = Label::new(Some(&n.to_string()));
-        label.add_css_class("control");
-        controls.insert(&label, n);
-    }
+    // for n in 0..=9 {
+    //     let label = Label::new(Some(&n.to_string()));
+    //     label.add_css_class("control");
+    //     controls.insert(&label, n);
+    // }
 
     window.set_application(Some(app));
-    window.set_default_size(480, 640);
+    window.set_default_size(600, 640);
 
     let container: gtk::Box = builder
         .object("container")
         .expect("Could not get object `container` from builder.");
+
+    grid.connect_local("board-solved", false, move |_| {
+        let title: Label = builder
+            .object::<Label>("title")
+            .expect("Could not get object `board` from builder.");
+
+        title.set_label("GANASTE ALV");
+        title.add_css_class("huge");
+
+        None
+    });
 
     window.set_child(Some(&container));
 

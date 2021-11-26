@@ -7,7 +7,7 @@
         <property name="orientation">vertical</property>
         <property name="margin-top">16</property>
         <child>
-          <object class="GtkLabel" id="label">
+          <object class="GtkLabel" id="title">
             <property name="label">Sudo-q xd</property>
             <property name="valign">start</property>
             <style>
@@ -26,14 +26,14 @@
             <property name="row-homogeneous">true</property>
           </object>
         </child>
-        <child>
-          <object class="GtkFlowBox" id="controls">
-            <property name="column-spacing">8</property>
-            <property name="margin-start">32</property>
-            <property name="margin-end">32</property>
-            <property name="margin-bottom">16</property>
-          </object>
-        </child>
+        <!-- <child> -->
+        <!--   <object class="GtkFlowBox" id="controls"> -->
+        <!--     <property name="column-spacing">8</property> -->
+        <!--     <property name="margin-start">32</property> -->
+        <!--     <property name="margin-end">32</property> -->
+        <!--     <property name="margin-bottom">16</property> -->
+        <!--   </object> -->
+        <!-- </child> -->
       </object>
     </child>
   </object>

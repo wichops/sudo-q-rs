@@ -9,7 +9,7 @@ use gtk::{
 
 use cell::BoardCell;
 
-use crate::cell;
+use crate::{cell, sudoku};
 use gtk4 as gtk;
 
 glib::wrapper! {
@@ -23,8 +23,15 @@ impl Board {
         Object::new(&[]).expect("Failed to create `Board`.")
     }
 
+    pub fn set_grid(&self, grid: sudoku::Sudoku) {
+        let imp = imp::Board::from_instance(self);
+
+        imp.set_grid(grid);
+    }
+
     pub fn attach_cell(&self, cell: &BoardCell, row: i32, column: i32) {
         cell.set_position((row, column));
+
         cell.connect_local(
             "cell-clicked",
             false,
