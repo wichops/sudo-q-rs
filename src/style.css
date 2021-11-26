@@ -7,8 +7,9 @@ label.title {
     font-weight: bold;
 }
 
-label.huge {
+label.title--win {
     font-size: 72px;
+    font-weight: bold;
     color: green;
 }
 flowboxchild {

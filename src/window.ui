@@ -1,39 +1,61 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <interface>
   <object class="GtkApplicationWindow" id="window">
-    <property name="title">SOY EL DIOS DEL QCI</property>
+    <property name="title">Sudoq</property>
     <child>
-      <object class="GtkBox" id="container">
-        <property name="orientation">vertical</property>
-        <property name="margin-top">16</property>
+      <object class="GtkStack" id="stack">
+        <property name="visible-child-name">game-screen</property>
         <child>
-          <object class="GtkLabel" id="title">
-            <property name="label">Sudo-q xd</property>
-            <property name="valign">start</property>
-            <style>
-              <class name="title" />
-            </style>
+          <object class="GtkStackPage">
+            <property name="name">game-screen</property>
+            <property name="child">
+              <object class="GtkBox" id="container">
+                <property name="orientation">vertical</property>
+                <property name="margin-top">16</property>
+                <child>
+                  <object class="GtkLabel" id="title">
+                    <property name="label">Sudo-q xd</property>
+                    <property name="valign">start</property>
+                    <style>
+                      <class name="title" />
+                    </style>
+                  </object>
+                </child>
+                <child>
+                  <object class="SudokuBoard" id="board">
+                    <property name="margin-start">16</property>
+                    <property name="margin-start">16</property>
+                    <property name="margin-end">16</property>
+                    <property name="margin-bottom">16</property>
+                    <property name="vexpand">true</property>
+                    <property name="column-homogeneous">true</property>
+                    <property name="row-homogeneous">true</property>
+                  </object>
+                </child>
+              </object>
+            </property>
           </object>
         </child>
         <child>
-          <object class="SudokuBoard" id="board">
-            <property name="margin-start">16</property>
-            <property name="margin-start">16</property>
-            <property name="margin-end">16</property>
-            <property name="margin-bottom">16</property>
-            <property name="vexpand">true</property>
-            <property name="column-homogeneous">true</property>
-            <property name="row-homogeneous">true</property>
+          <object class="GtkStackPage">
+            <property name="name">win-screen</property>
+            <property name="child">
+              <object class="GtkBox">
+                <property name="orientation">vertical</property>
+                <property name="margin-top">16</property>
+                <child>
+                  <object class="GtkLabel" id="win-title">
+                    <property name="label">GANASTE ALV</property>
+                    <property name="valign">center</property>
+                    <style>
+                      <class name="title--win" />
+                    </style>
+                  </object>
+                </child>
+              </object>
+            </property>
           </object>
         </child>
-        <!-- <child> -->
-        <!--   <object class="GtkFlowBox" id="controls"> -->
-        <!--     <property name="column-spacing">8</property> -->
-        <!--     <property name="margin-start">32</property> -->
-        <!--     <property name="margin-end">32</property> -->
-        <!--     <property name="margin-bottom">16</property> -->
-        <!--   </object> -->
-        <!-- </child> -->
       </object>
     </child>
   </object>

@@ -1,7 +1,7 @@
 use gdk::Display;
 use gtk::{
-    gdk, prelude::*, Application, ApplicationWindow, CssProvider, Label, StyleContext,
-    STYLE_PROVIDER_PRIORITY_APPLICATION,
+    gdk, prelude::*, Application, ApplicationWindow, CssProvider, Label, Stack,
+    StackTransitionType, StyleContext, STYLE_PROVIDER_PRIORITY_APPLICATION,
 };
 use gtk4 as gtk;
 
@@ -40,10 +40,6 @@ fn main() {
 fn build_ui(app: &Application) {
     let builder = gtk::Builder::from_string(include_str!("window.ui"));
 
-    let window: ApplicationWindow = builder
-        .object("window")
-        .expect("Could not get object `window` from builder.");
-
     let grid: Board = builder
         .object::<Board>("board")
         .expect("Could not get object `board` from builder.");
@@ -59,6 +55,19 @@ fn build_ui(app: &Application) {
         }
     }
 
+    let stack: Stack = builder
+        .object::<Stack>("stack")
+        .expect("Could not get `stack` from builder.");
+
+    stack.set_transition_duration(300);
+    stack.set_transition_type(StackTransitionType::SlideDown);
+
+    grid.connect_local("board-solved", false, move |_| {
+        stack.set_visible_child_name("win-screen");
+
+        None
+    });
+
     // let controls: gtk::FlowBox = builder
     //     .object("controls")
     //     .expect("Could not get object `controls` from builder.");
@@ -69,25 +78,12 @@ fn build_ui(app: &Application) {
     //     controls.insert(&label, n);
     // }
 
+    let window: ApplicationWindow = builder
+        .object("window")
+        .expect("Could not get object `window` from builder.");
+
     window.set_application(Some(app));
     window.set_default_size(600, 640);
-
-    let container: gtk::Box = builder
-        .object("container")
-        .expect("Could not get object `container` from builder.");
-
-    grid.connect_local("board-solved", false, move |_| {
-        let title: Label = builder
-            .object::<Label>("title")
-            .expect("Could not get object `board` from builder.");
-
-        title.set_label("GANASTE ALV");
-        title.add_css_class("huge");
-
-        None
-    });
-
-    window.set_child(Some(&container));
 
     window.present();
 }
