@@ -17,6 +17,7 @@ pub struct BoardCell {
     pub number: Cell<i32>,
     pub position: Cell<(i32, i32)>,
     pub selected: Cell<bool>,
+    pub changeable: Cell<bool>,
 }
 
 // The central trait for subclassing a GObject
@@ -45,6 +46,10 @@ impl BoardCell {
         };
 
         self.label.set_label(&text);
+    }
+
+    pub fn set_changeable(&self, changeable: bool) {
+        self.changeable.set(changeable);
     }
 }
 // Trait shared by all GObjects

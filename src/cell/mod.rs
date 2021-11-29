@@ -18,6 +18,7 @@ impl BoardCell {
     pub fn with_number(number: i32) -> Self {
         let object = Object::new(&[]).expect("Failed to create `BoardCell`.");
 
+        BoardCell::set_changeable(&object, !matches!(number, 1..=9));
         BoardCell::set_number(&object, number);
         object
     }
@@ -25,6 +26,16 @@ impl BoardCell {
     pub fn set_number(&self, number: i32) {
         let imp = imp::BoardCell::from_instance(self);
         imp.set_number(number);
+    }
+
+    pub fn set_changeable(&self, changeable: bool) {
+        let imp = imp::BoardCell::from_instance(self);
+        imp.set_changeable(changeable);
+    }
+
+    pub fn is_changeable(&self) -> bool {
+        let imp = imp::BoardCell::from_instance(self);
+        imp.changeable.get()
     }
 
     pub fn set_position(&self, position: (i32, i32)) {

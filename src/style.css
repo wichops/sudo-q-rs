@@ -19,14 +19,21 @@ flowboxchild {
 
 button.btn {
     background-color: transparent;
-    border-radius: 50%;
+    border-radius: 20px;
+    border: 1px solid black;
+    background-image: none;
 }
 
 .grid-item {
-    border-right: 1px solid lightgrey;
-    border-bottom: 1px solid lightgrey;
+    padding: 8px;
+    border-radius: 0;
     color: black;
     font-size: 16px;
+    border-left: 0;
+    border-top: 0;
+    border-right: 1px solid lightgrey;
+    border-bottom: 1px solid lightgrey;
+    background-image: none;
 }
 
 .grid-item__content {
@@ -52,22 +59,12 @@ label {
     min-height: 48px;
 }
 
-button {
-    border: none;
-    padding: 4px;
-    border-radius: 0;
+button.btn:hover {
+    background-color: gray;
 }
 
-button.flat {
-    border: none;
-    background-color: rgba(0,0,0,0);
-    border-radius: 0;
-}
 
-.grid-item:nth-child(9n + 3) {
-    border-right: 2px solid grey;
-}
-
+.grid-item:nth-child(9n + 3),
 .grid-item:nth-child(9n + 6) {
     border-right: 2px solid grey;
 }

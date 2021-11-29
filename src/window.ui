@@ -28,9 +28,9 @@
                     <property name="margin-top">16</property>
                     <property name="margin-start">200</property>
                     <property name="margin-end">200</property>
-                    <!-- <style> -->
-                    <!--   <class name="btn" /> -->
-                    <!-- </style> -->
+                    <style>
+                      <class name="btn" />
+                    </style>
                     <child>
                       <object class="GtkLabel">
                         <property name="label">New Game</property>

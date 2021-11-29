@@ -56,6 +56,10 @@ impl ObjectImpl for Board {
                         let selected = imp.selected.borrow();
                         if let Some(s) = selected.as_ref() {
                             let (row, column) = s.get_position();
+                            if !s.is_changeable() {
+                                println!("nope!");
+                                return Inhibit(false);
+                            }
 
                             s.set_number(number as i32);
 
