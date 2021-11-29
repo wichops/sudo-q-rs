@@ -62,7 +62,7 @@ impl ObjectImpl for Board {
                             }
 
                             s.set_number(number as i32);
-
+                            obj.highlight_number(number as i32);
 
                             let mut sudoku = imp.grid.borrow_mut();
                             if let Some(g) = sudoku.as_mut() {

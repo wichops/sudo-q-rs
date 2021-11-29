@@ -27,8 +27,7 @@ button.btn {
 .grid-item {
     padding: 8px;
     border-radius: 0;
-    color: black;
-    font-size: 16px;
+    color: darkgrey;
     border-left: 0;
     border-top: 0;
     border-right: 1px solid lightgrey;
@@ -37,13 +36,19 @@ button.btn {
 }
 
 .grid-item__content {
-    background-color: #ddd;
-    font-size: 16px;
+    background-color: #f0f0f0;
+    font-size: 20px;
     border-radius: 100%;
+    transition: all 0.2s ease-out;
 }
 
+.grid-item--highlighted .grid-item__content {
+    background-color: #aebbcb;
+    color: white;
+}
 .grid-item--selected .grid-item__content {
-    background-color: #6ac9fc;
+    background-color: #4f94cd;
+    color: white;
 }
 
 
@@ -60,18 +65,20 @@ label {
 }
 
 button.btn:hover {
-    background-color: gray;
+    background-color: #4f94cd;
+    color: white;
+    border-color: transparent;
 }
 
 
 .grid-item:nth-child(9n + 3),
 .grid-item:nth-child(9n + 6) {
-    border-right: 2px solid grey;
+    border-right: 2px solid #4f94cd;
 }
 
 .grid-item:nth-child(n+19):nth-child(-n+27),
 .grid-item:nth-child(n+46):nth-child(-n+54) {
-    border-bottom: 2px solid grey;
+    border-bottom: 2px solid #4f94cd;
 }
 
 .grid-item:nth-child(9n) {

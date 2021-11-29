@@ -23,6 +23,11 @@ impl BoardCell {
         object
     }
 
+    pub fn get_number(&self) -> i32 {
+        let imp = imp::BoardCell::from_instance(self);
+        imp.number.get()
+    }
+
     pub fn set_number(&self, number: i32) {
         let imp = imp::BoardCell::from_instance(self);
         imp.set_number(number);

@@ -44,6 +44,18 @@ impl Sudoku {
         self.board[row as usize][column as usize] = number;
     }
 
+    pub fn get_number_positions(&self, number: i32) -> Vec<(i32, i32)> {
+        let mut positions = vec![];
+        for i in 0..BOARD_SIZE {
+            for j in 0..BOARD_SIZE {
+                if self.board[i][j] == number {
+                    positions.push((i as i32, j as i32));
+                }
+            }
+        }
+        positions
+    }
+
     fn generate_puzzle(&mut self) {
         let mut numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9];
         let mut rng = thread_rng();
